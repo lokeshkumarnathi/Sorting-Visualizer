@@ -40,6 +40,10 @@ function renderArray() {
         const bar = document.createElement('div');
         bar.classList.add('bar');
         bar.style.height = `${Math.min(value * 10, 400)}px`;
+        const label = document.createElement('span');
+        label.classList.add('bar-label');
+        label.textContent = value;
+        bar.appendChild(label);
         container.appendChild(bar);
     });
 }
@@ -91,7 +95,9 @@ async function bubbleSort() {
             if (array[j] > array[j + 1]) {
                 [array[j], array[j + 1]] = [array[j + 1], array[j]];
                 bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
+                bars[j].querySelector('.bar-label').textContent = array[j];
                 bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
+                bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
             }
             await sleep(delay);
             bars[j].classList.remove('comparing');
@@ -116,7 +122,9 @@ async function selectionSort() {
         if (minIdx !== i) {
             [array[i], array[minIdx]] = [array[minIdx], array[i]];
             bars[i].style.height = `${Math.min(array[i] * 10, 400)}px`;
+            bars[i].querySelector('.bar-label').textContent = array[i];
             bars[minIdx].style.height = `${Math.min(array[minIdx] * 10, 400)}px`;
+            bars[minIdx].querySelector('.bar-label').textContent = array[minIdx];
         }
         bars[i].classList.remove('comparing');
         await sleep(delay / 2);
@@ -132,11 +140,13 @@ async function insertionSort() {
         while (j >= 0 && array[j] > key && isSorting) {
             array[j + 1] = array[j];
             bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
+            bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
             j--;
             await sleep(delay);
         }
         array[j + 1] = key;
         bars[j + 1].style.height = `${Math.min(key * 10, 400)}px`;
+        bars[j + 1].querySelector('.bar-label').textContent = key;
         bars[i].classList.remove('comparing');
         await sleep(delay);
     }
@@ -162,10 +172,12 @@ async function merge(left, mid, right) {
         if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
             bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+            bars[k].querySelector('.bar-label').textContent = array[k];
             i++;
         } else {
             array[k] = rightArray[j];
             bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+            bars[k].querySelector('.bar-label').textContent = array[k];
             j++;
         }
         await sleep(delay);
@@ -176,6 +188,7 @@ async function merge(left, mid, right) {
     while (i < leftArray.length && isSorting) {
         array[k] = leftArray[i];
         bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+        bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
         await sleep(delay);
         bars[k].classList.remove('comparing');
@@ -186,6 +199,7 @@ async function merge(left, mid, right) {
     while (j < rightArray.length && isSorting) {
         array[k] = rightArray[j];
         bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+        bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
         await sleep(delay);
         bars[k].classList.remove('comparing');
@@ -214,7 +228,9 @@ async function partition(left, right) {
             i++;
             [array[i], array[j]] = [array[j], array[i]];
             bars[i].style.height = `${Math.min(array[i] * 10, 400)}px`;
+            bars[i].querySelector('.bar-label').textContent = array[i];
             bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
+            bars[j].querySelector('.bar-label').textContent = array[j];
         }
         await sleep(delay);
         bars[j].classList.remove('comparing');
@@ -222,7 +238,9 @@ async function partition(left, right) {
 
     [array[i + 1], array[right]] = [array[right], array[i + 1]];
     bars[i + 1].style.height = `${Math.min(array[i + 1] * 10, 400)}px`;
+    bars[i + 1].querySelector('.bar-label').textContent = array[i + 1];
     bars[right].style.height = `${Math.min(array[right] * 10, 400)}px`;
+    bars[right].querySelector('.bar-label').textContent = array[right];
     bars[right].classList.remove('comparing');
     await sleep(delay);
     return i + 1;
