@@ -2,6 +2,19 @@ let array = [];
 let isSorting = false;
 let currentAlgorithm = 'bubble';
 let delay = 100;
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+function playSound(frequency, duration = 0.1) {
+    const oscillator = audioCtx.createOscillator();
+    const gainNode = audioCtx.createGain();
+    oscillator.connect(gainNode);
+    gainNode.connect(audioCtx.destination);
+    oscillator.type = 'sine';
+    oscillator.frequency.setValueAtTime(frequency, audioCtx.currentTime);
+    gainNode.gain.setValueAtTime(0.5, audioCtx.currentTime);
+    oscillator.start();
+    oscillator.stop(audioCtx.currentTime + duration);
+}
 
 function loadArray() {
     if (isSorting) return;
@@ -92,12 +105,14 @@ async function bubbleSort() {
         for (let j = 0; j < array.length - i - 1 && isSorting; j++) {
             bars[j].classList.add('comparing');
             bars[j + 1].classList.add('comparing');
+            playSound(440); // A4 note for comparison
             if (array[j] > array[j + 1]) {
                 [array[j], array[j + 1]] = [array[j + 1], array[j]];
                 bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
                 bars[j].querySelector('.bar-label').textContent = array[j];
                 bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
                 bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
+                playSound(523.25); // C5 note for swap
             }
             await sleep(delay);
             bars[j].classList.remove('comparing');
@@ -113,6 +128,7 @@ async function selectionSort() {
         bars[i].classList.add('comparing');
         for (let j = i + 1; j < array.length && isSorting; j++) {
             bars[j].classList.add('comparing');
+            playSound(493.88); // B4 note for comparison
             if (array[j] < array[minIdx]) {
                 minIdx = j;
             }
@@ -125,6 +141,7 @@ async function selectionSort() {
             bars[i].querySelector('.bar-label').textContent = array[i];
             bars[minIdx].style.height = `${Math.min(array[minIdx] * 10, 400)}px`;
             bars[minIdx].querySelector('.bar-label').textContent = array[minIdx];
+            playSound(587.33); // D5 note for swap
         }
         bars[i].classList.remove('comparing');
         await sleep(delay / 2);
@@ -138,6 +155,7 @@ async function insertionSort() {
         let j = i - 1;
         bars[i].classList.add('comparing');
         while (j >= 0 && array[j] > key && isSorting) {
+            playSound(466.16); // A#4 note for comparison
             array[j + 1] = array[j];
             bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
             bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
@@ -147,6 +165,7 @@ async function insertionSort() {
         array[j + 1] = key;
         bars[j + 1].style.height = `${Math.min(key * 10, 400)}px`;
         bars[j + 1].querySelector('.bar-label').textContent = key;
+        playSound(659.25); // E5 note for insertion
         bars[i].classList.remove('comparing');
         await sleep(delay);
     }
@@ -169,6 +188,7 @@ async function merge(left, mid, right) {
 
     while (i < leftArray.length && j < rightArray.length && isSorting) {
         bars[k].classList.add('comparing');
+        playSound(415.30); // G#4 note for comparison
         if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
             bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
@@ -180,6 +200,7 @@ async function merge(left, mid, right) {
             bars[k].querySelector('.bar-label').textContent = array[k];
             j++;
         }
+        playSound(698.46); // F5 note for merge
         await sleep(delay);
         bars[k].classList.remove('comparing');
         k++;
@@ -190,6 +211,7 @@ async function merge(left, mid, right) {
         bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
         bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
+        playSound(698.46); // F5 note for merge
         await sleep(delay);
         bars[k].classList.remove('comparing');
         i++;
@@ -201,6 +223,7 @@ async function merge(left, mid, right) {
         bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
         bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
+        playSound(698.46); // F5 note for merge
         await sleep(delay);
         bars[k].classList.remove('comparing');
         j++;
@@ -224,6 +247,7 @@ async function partition(left, right) {
 
     for (let j = left; j < right && isSorting; j++) {
         bars[j].classList.add('comparing');
+        playSound(392.00); // G4 note for comparison
         if (array[j] <= pivot) {
             i++;
             [array[i], array[j]] = [array[j], array[i]];
@@ -231,6 +255,7 @@ async function partition(left, right) {
             bars[i].querySelector('.bar-label').textContent = array[i];
             bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
             bars[j].querySelector('.bar-label').textContent = array[j];
+            playSound(783.99); // G5 note for swap
         }
         await sleep(delay);
         bars[j].classList.remove('comparing');
@@ -241,6 +266,7 @@ async function partition(left, right) {
     bars[i + 1].querySelector('.bar-label').textContent = array[i + 1];
     bars[right].style.height = `${Math.min(array[right] * 10, 400)}px`;
     bars[right].querySelector('.bar-label').textContent = array[right];
+    playSound(783.99); // G5 note for swap
     bars[right].classList.remove('comparing');
     await sleep(delay);
     return i + 1;
@@ -250,6 +276,7 @@ async function markSorted() {
     const bars = document.getElementsByClassName('bar');
     for (let i = 0; i < array.length && isSorting; i++) {
         bars[i].classList.add('sorted');
+        playSound(880.00); // A5 note for sorted
         await sleep(delay / 2);
     }
 }
