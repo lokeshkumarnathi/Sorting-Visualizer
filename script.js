@@ -89,7 +89,7 @@ function startVisualization() {
     }
     const arrayParam = encodeURIComponent(array.join(','));
     const speed = 1000 - (parseInt(document.getElementById('speed').value) || 900);
-    const size = parseInt(document.getElementById('size').value) || 20;
+    const size = parseInt(document.getElementById('size').value) || 10;
     const url = `visualizer.html?algorithm=${currentAlgorithm}&speed=${speed}&size=${size}&array=${arrayParam}&autoStart=true`;
     console.log('Navigating to:', url);
     window.location.href = url;
