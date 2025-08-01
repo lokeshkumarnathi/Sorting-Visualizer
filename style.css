@@ -32,3 +32,6 @@
 #sidebar.hidden {
     transform: translateX(100%);
 }
+#sorted-result {
+    transition: opacity 0.3s ease;
+}
