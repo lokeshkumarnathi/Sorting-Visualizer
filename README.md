@@ -18,7 +18,7 @@ Five Sorting Algorithms: Implements Bubble Sort, Selection Sort, Insertion Sort,
 
 
 
-Custom Input: Accepts comma-separated integers (2–50 elements) with validation.
+Custom Input: Accepts comma-separated integers (2–100 elements) with validation.
 
 
 
