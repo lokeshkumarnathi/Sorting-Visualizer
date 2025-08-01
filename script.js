@@ -47,15 +47,15 @@ function generateRandomArray() {
 }
 
 function renderArray() {
-    const container = document.getElementById('array-container');
+    const container = document.getElementById('bar-wrapper');
     container.innerHTML = '';
     const maxHeight = 384; // Match h-96 (24rem = 384px)
-    const maxValue = Math.max(...array); // Dynamically use the highest value in the array
+    const maxValue = Math.max(...array); // Dynamically use the highest value
     if (maxValue === 0) maxValue = 1; // Avoid division by zero
     array.forEach((value, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        const height = Math.min((value / maxValue) * maxHeight, maxHeight); // Scale and cap at container height
+        const height = Math.min((value / maxValue) * maxHeight, maxHeight); // Scale and cap at 384px
         bar.style.height = `${height}px`;
         const label = document.createElement('span');
         label.classList.add('bar-label');
