@@ -49,13 +49,13 @@ function generateRandomArray() {
 function renderArray() {
     const container = document.getElementById('array-container');
     container.innerHTML = '';
-    const maxHeight = 400;
+    const maxHeight = 384; // Match h-96 (24rem = 384px)
     const maxValue = Math.max(...array); // Dynamically use the highest value in the array
     if (maxValue === 0) maxValue = 1; // Avoid division by zero
     array.forEach((value, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        const height = Math.min((value / maxValue) * maxHeight, maxHeight); // Scale and cap at 400px
+        const height = Math.min((value / maxValue) * maxHeight, maxHeight); // Scale and cap at container height
         bar.style.height = `${height}px`;
         const label = document.createElement('span');
         label.classList.add('bar-label');
@@ -120,7 +120,7 @@ async function bubbleSort() {
             playSound(440); // A4 note for comparison
             if (array[j] > array[j + 1]) {
                 [array[j], array[j + 1]] = [array[j + 1], array[j]];
-                const maxHeight = 400;
+                const maxHeight = 384;
                 const maxValue = Math.max(...array);
                 if (maxValue === 0) maxValue = 1;
                 bars[j].style.height = `${Math.min((array[j] / maxValue) * maxHeight, maxHeight)}px`;
@@ -152,7 +152,7 @@ async function selectionSort() {
         }
         if (minIdx !== i) {
             [array[i], array[minIdx]] = [array[minIdx], array[i]];
-            const maxHeight = 400;
+            const maxHeight = 384;
             const maxValue = Math.max(...array);
             if (maxValue === 0) maxValue = 1;
             bars[i].style.height = `${Math.min((array[i] / maxValue) * maxHeight, maxHeight)}px`;
@@ -175,7 +175,7 @@ async function insertionSort() {
         while (j >= 0 && array[j] > key && isSorting) {
             playSound(466.16); // A#4 note for comparison
             array[j + 1] = array[j];
-            const maxHeight = 400;
+            const maxHeight = 384;
             const maxValue = Math.max(...array);
             if (maxValue === 0) maxValue = 1;
             bars[j + 1].style.height = `${Math.min((array[j + 1] / maxValue) * maxHeight, maxHeight)}px`;
@@ -184,7 +184,7 @@ async function insertionSort() {
             await sleep(delay);
         }
         array[j + 1] = key;
-        bars[j + 1].style.height = `${Math.min((key / Math.max(...array)) * 400, 400)}px`;
+        bars[j + 1].style.height = `${Math.min((key / Math.max(...array)) * 384, 384)}px`;
         bars[j + 1].querySelector('.bar-label').textContent = key;
         playSound(659.25); // E5 note for insertion
         bars[i].classList.remove('comparing');
@@ -212,7 +212,7 @@ async function merge(left, mid, right) {
         playSound(415.30); // G#4 note for comparison
         if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
-            const maxHeight = 400;
+            const maxHeight = 384;
             const maxValue = Math.max(...array);
             if (maxValue === 0) maxValue = 1;
             bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
@@ -220,7 +220,7 @@ async function merge(left, mid, right) {
             i++;
         } else {
             array[k] = rightArray[j];
-            const maxHeight = 400;
+            const maxHeight = 384;
             const maxValue = Math.max(...array);
             if (maxValue === 0) maxValue = 1;
             bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
@@ -235,7 +235,7 @@ async function merge(left, mid, right) {
 
     while (i < leftArray.length && isSorting) {
         array[k] = leftArray[i];
-        const maxHeight = 400;
+        const maxHeight = 384;
         const maxValue = Math.max(...array);
         if (maxValue === 0) maxValue = 1;
         bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
@@ -250,7 +250,7 @@ async function merge(left, mid, right) {
 
     while (j < rightArray.length && isSorting) {
         array[k] = rightArray[j];
-        const maxHeight = 400;
+        const maxHeight = 384;
         const maxValue = Math.max(...array);
         if (maxValue === 0) maxValue = 1;
         bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
@@ -284,7 +284,7 @@ async function partition(left, right) {
         if (array[j] <= pivot) {
             i++;
             [array[i], array[j]] = [array[j], array[i]];
-            const maxHeight = 400;
+            const maxHeight = 384;
             const maxValue = Math.max(...array);
             if (maxValue === 0) maxValue = 1;
             bars[i].style.height = `${Math.min((array[i] / maxValue) * maxHeight, maxHeight)}px`;
@@ -298,7 +298,7 @@ async function partition(left, right) {
     }
 
     [array[i + 1], array[right]] = [array[right], array[i + 1]];
-    const maxHeight = 400;
+    const maxHeight = 384;
     const maxValue = Math.max(...array);
     if (maxValue === 0) maxValue = 1;
     bars[i + 1].style.height = `${Math.min((array[i + 1] / maxValue) * maxHeight, maxHeight)}px`;
