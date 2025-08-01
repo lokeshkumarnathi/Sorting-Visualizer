@@ -1,4 +1,6 @@
-
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
     font-family: 'Inter', Arial, sans-serif;
@@ -136,4 +138,3 @@ body {
         font-size: 12px;
     }
 }
-
