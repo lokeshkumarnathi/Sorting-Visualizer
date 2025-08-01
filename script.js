@@ -27,8 +27,8 @@ function loadArray() {
             if (isNaN(value)) throw new Error('Invalid number');
             return value;
         });
-        if (array.length < 1) throw new Error('Array too short');
-        if (array.length > 500) throw new Error('Array too large');
+        if (array.length < 2) throw new Error('Array too short');
+        if (array.length > 100) throw new Error('Array too large');
         error.classList.add('hidden');
         renderArray();
     } catch (e) {
@@ -52,7 +52,7 @@ function renderArray() {
     array.forEach(value => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        bar.style.height = `${Math.min(value * 10, 400)}px`;
+        bar.style.height = `${Math.min(value * 10, 100)}px`;
         const label = document.createElement('span');
         label.classList.add('bar-label');
         label.textContent = value;
