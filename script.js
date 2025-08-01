@@ -28,10 +28,10 @@ function loadArray() {
             return value;
         });
         if (array.length < 2) throw new Error('Array too short');
-        if (array.length > 100) throw new Error('Array too large');
         error.classList.add('hidden');
         renderArray();
     } catch (e) {
+        error.textContent = `Invalid input! Please enter numbers separated by commas (e.g., 5, 2, 8). ${e.message}`;
         error.classList.remove('hidden');
         return;
     }
@@ -40,7 +40,7 @@ function loadArray() {
 function generateRandomArray() {
     if (isSorting) return;
     document.getElementById('error').classList.add('hidden');
-    const size = document.getElementById('size').value;
+    const size = Math.min(document.getElementById('size').value, 50); // Cap at 50 for random generation
     array = Array.from({ length: size }, () => Math.floor(Math.random() * 30) + 1);
     document.getElementById('array-input').value = array.join(', ');
     renderArray();
@@ -49,10 +49,14 @@ function generateRandomArray() {
 function renderArray() {
     const container = document.getElementById('array-container');
     container.innerHTML = '';
-    array.forEach(value => {
+    const maxHeight = 400;
+    const maxValue = Math.max(...array); // Dynamically use the highest value in the array
+    if (maxValue === 0) maxValue = 1; // Avoid division by zero
+    array.forEach((value, index) => {
         const bar = document.createElement('div');
         bar.classList.add('bar');
-        bar.style.height = `${Math.min(value * 10, 100)}px`;
+        const height = Math.min((value / maxValue) * maxHeight, maxHeight); // Scale and cap at 400px
+        bar.style.height = `${height}px`;
         const label = document.createElement('span');
         label.classList.add('bar-label');
         label.textContent = value;
@@ -95,7 +99,15 @@ async function startSorting() {
             await quickSort(0, array.length - 1);
             break;
     }
-    if (isSorting) await markSorted();
+    if (isSorting) {
+        await markSorted();
+        // Display sorted array in dedicated result section
+        const sortedResult = document.getElementById('sorted-result');
+        const sortedArraySpan = document.getElementById('sorted-array');
+        sortedArraySpan.textContent = array.join(', ');
+        sortedResult.classList.remove('hidden');
+        console.log('Sorted Array:', array);
+    }
     isSorting = false;
 }
 
@@ -108,9 +120,12 @@ async function bubbleSort() {
             playSound(440); // A4 note for comparison
             if (array[j] > array[j + 1]) {
                 [array[j], array[j + 1]] = [array[j + 1], array[j]];
-                bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
+                const maxHeight = 400;
+                const maxValue = Math.max(...array);
+                if (maxValue === 0) maxValue = 1;
+                bars[j].style.height = `${Math.min((array[j] / maxValue) * maxHeight, maxHeight)}px`;
                 bars[j].querySelector('.bar-label').textContent = array[j];
-                bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
+                bars[j + 1].style.height = `${Math.min((array[j + 1] / maxValue) * maxHeight, maxHeight)}px`;
                 bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
                 playSound(523.25); // C5 note for swap
             }
@@ -137,9 +152,12 @@ async function selectionSort() {
         }
         if (minIdx !== i) {
             [array[i], array[minIdx]] = [array[minIdx], array[i]];
-            bars[i].style.height = `${Math.min(array[i] * 10, 400)}px`;
+            const maxHeight = 400;
+            const maxValue = Math.max(...array);
+            if (maxValue === 0) maxValue = 1;
+            bars[i].style.height = `${Math.min((array[i] / maxValue) * maxHeight, maxHeight)}px`;
             bars[i].querySelector('.bar-label').textContent = array[i];
-            bars[minIdx].style.height = `${Math.min(array[minIdx] * 10, 400)}px`;
+            bars[minIdx].style.height = `${Math.min((array[minIdx] / maxValue) * maxHeight, maxHeight)}px`;
             bars[minIdx].querySelector('.bar-label').textContent = array[minIdx];
             playSound(587.33); // D5 note for swap
         }
@@ -157,13 +175,16 @@ async function insertionSort() {
         while (j >= 0 && array[j] > key && isSorting) {
             playSound(466.16); // A#4 note for comparison
             array[j + 1] = array[j];
-            bars[j + 1].style.height = `${Math.min(array[j + 1] * 10, 400)}px`;
+            const maxHeight = 400;
+            const maxValue = Math.max(...array);
+            if (maxValue === 0) maxValue = 1;
+            bars[j + 1].style.height = `${Math.min((array[j + 1] / maxValue) * maxHeight, maxHeight)}px`;
             bars[j + 1].querySelector('.bar-label').textContent = array[j + 1];
             j--;
             await sleep(delay);
         }
         array[j + 1] = key;
-        bars[j + 1].style.height = `${Math.min(key * 10, 400)}px`;
+        bars[j + 1].style.height = `${Math.min((key / Math.max(...array)) * 400, 400)}px`;
         bars[j + 1].querySelector('.bar-label').textContent = key;
         playSound(659.25); // E5 note for insertion
         bars[i].classList.remove('comparing');
@@ -191,12 +212,18 @@ async function merge(left, mid, right) {
         playSound(415.30); // G#4 note for comparison
         if (leftArray[i] <= rightArray[j]) {
             array[k] = leftArray[i];
-            bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+            const maxHeight = 400;
+            const maxValue = Math.max(...array);
+            if (maxValue === 0) maxValue = 1;
+            bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
             bars[k].querySelector('.bar-label').textContent = array[k];
             i++;
         } else {
             array[k] = rightArray[j];
-            bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+            const maxHeight = 400;
+            const maxValue = Math.max(...array);
+            if (maxValue === 0) maxValue = 1;
+            bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
             bars[k].querySelector('.bar-label').textContent = array[k];
             j++;
         }
@@ -208,7 +235,10 @@ async function merge(left, mid, right) {
 
     while (i < leftArray.length && isSorting) {
         array[k] = leftArray[i];
-        bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+        const maxHeight = 400;
+        const maxValue = Math.max(...array);
+        if (maxValue === 0) maxValue = 1;
+        bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
         bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
         playSound(698.46); // F5 note for merge
@@ -220,7 +250,10 @@ async function merge(left, mid, right) {
 
     while (j < rightArray.length && isSorting) {
         array[k] = rightArray[j];
-        bars[k].style.height = `${Math.min(array[k] * 10, 400)}px`;
+        const maxHeight = 400;
+        const maxValue = Math.max(...array);
+        if (maxValue === 0) maxValue = 1;
+        bars[k].style.height = `${Math.min((array[k] / maxValue) * maxHeight, maxHeight)}px`;
         bars[k].querySelector('.bar-label').textContent = array[k];
         bars[k].classList.add('comparing');
         playSound(698.46); // F5 note for merge
@@ -251,9 +284,12 @@ async function partition(left, right) {
         if (array[j] <= pivot) {
             i++;
             [array[i], array[j]] = [array[j], array[i]];
-            bars[i].style.height = `${Math.min(array[i] * 10, 400)}px`;
+            const maxHeight = 400;
+            const maxValue = Math.max(...array);
+            if (maxValue === 0) maxValue = 1;
+            bars[i].style.height = `${Math.min((array[i] / maxValue) * maxHeight, maxHeight)}px`;
             bars[i].querySelector('.bar-label').textContent = array[i];
-            bars[j].style.height = `${Math.min(array[j] * 10, 400)}px`;
+            bars[j].style.height = `${Math.min((array[j] / maxValue) * maxHeight, maxHeight)}px`;
             bars[j].querySelector('.bar-label').textContent = array[j];
             playSound(783.99); // G5 note for swap
         }
@@ -262,9 +298,12 @@ async function partition(left, right) {
     }
 
     [array[i + 1], array[right]] = [array[right], array[i + 1]];
-    bars[i + 1].style.height = `${Math.min(array[i + 1] * 10, 400)}px`;
+    const maxHeight = 400;
+    const maxValue = Math.max(...array);
+    if (maxValue === 0) maxValue = 1;
+    bars[i + 1].style.height = `${Math.min((array[i + 1] / maxValue) * maxHeight, maxHeight)}px`;
     bars[i + 1].querySelector('.bar-label').textContent = array[i + 1];
-    bars[right].style.height = `${Math.min(array[right] * 10, 400)}px`;
+    bars[right].style.height = `${Math.min((array[right] / maxValue) * maxHeight, maxHeight)}px`;
     bars[right].querySelector('.bar-label').textContent = array[right];
     playSound(783.99); // G5 note for swap
     bars[right].classList.remove('comparing');
