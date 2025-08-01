@@ -100,8 +100,8 @@ function initializeFromURL() {
     const urlParams = new URLSearchParams(window.location.search);
     const arrayParam = urlParams.get('array');
     const algorithm = urlParams.get('algorithm') || 'bubble';
-    const speed = parseInt(urlParams.get('speed')) || 100;
-    const size = parseInt(urlParams.get('size')) || 20;
+    const speed = parseInt(urlParams.get('speed')) || 20;
+    const size = parseInt(urlParams.get('size')) || 10;
     const error = document.getElementById('error');
 
     try {
