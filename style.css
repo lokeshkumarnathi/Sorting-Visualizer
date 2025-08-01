@@ -6,7 +6,7 @@
     border-radius: 4px;
     position: relative;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
 }
 .bar-label {
@@ -25,8 +25,14 @@
 }
 #array-container {
     transition: all 0.3s ease;
-    overflow: hidden; /* Prevent bars from spilling out */
-    max-height: 24rem; /* Ensure h-96 (384px) is strictly enforced */
+    overflow: hidden; /* Strictly prevent overflow */
+    max-height: 24rem; /* 384px for h-96 */
+    position: relative;
+}
+#bar-wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
 }
 #sidebar {
     transition: transform 0.3s ease;
