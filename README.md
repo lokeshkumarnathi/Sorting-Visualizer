@@ -1,5 +1,5 @@
 Sorting Visualizer
-Overview
+Overview:
 Sorting Visualizer is an interactive web application designed to help users understand and visualize popular sorting algorithms. Developed by Lokesh Kumar, the project showcases algorithms like Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, and Quick Sort through animated bar representations.
 Features
 
