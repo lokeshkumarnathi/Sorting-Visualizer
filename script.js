@@ -27,8 +27,8 @@ function loadArray() {
             if (isNaN(value)) throw new Error('Invalid number');
             return value;
         });
-        if (array.length < 2) throw new Error('Array too short');
-        if (array.length > 50) throw new Error('Array too large');
+        if (array.length < 1) throw new Error('Array too short');
+        if (array.length > 500) throw new Error('Array too large');
         error.classList.add('hidden');
         renderArray();
     } catch (e) {
