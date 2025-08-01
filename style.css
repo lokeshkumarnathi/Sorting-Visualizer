@@ -1,21 +1,22 @@
 .bar {
-    width: 20px;
-    margin: 0 2px;
+    width: 12px;
+    margin: 1px;
     background-color: #60a5fa;
     transition: height 0.3s ease, background-color 0.3s ease;
     border-radius: 4px;
     position: relative;
     display: flex;
-    align-items: flex-start;
+    align-items: flex-end;
     justify-content: center;
 }
 .bar-label {
     position: absolute;
-    top: -20px;
+    top: -18px;
     color: #1f2937;
-    font-size: 12px;
+    font-size: 9px;
     font-weight: bold;
     text-align: center;
+    white-space: nowrap;
 }
 .comparing {
     background-color: #f87171;
@@ -25,8 +26,18 @@
 }
 #array-container {
     transition: all 0.3s ease;
-    overflow: hidden; /* Prevent bars from spilling out */
-    max-height: 24rem; /* Ensure h-96 (384px) is strictly enforced */
+    overflow: hidden;
+    max-height: 24rem;
+    position: relative;
+}
+#bar-wrapper {
+    height: 100%;
+    width: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-wrap: nowrap;
 }
 #sidebar {
     transition: transform 0.3s ease;
