@@ -3,143 +3,84 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sorting Visualizer</title>
+    <title>Home - Sorting Visualizer</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="min-h-screen bg-gradient-to-br from-blue-500 to-purple-600 flex flex-col items-center justify-center p-4">
-    <div class="flex flex-col lg:flex-row w-full max-w-6xl gap-4">
-        <div class="bg-white rounded-2xl shadow-2xl p-6 w-full lg:w-3/4">
-            <h1 class="text-3xl font-bold text-gray-800 mb-6 text-center">Sorting Visualizer</h1>
-            <div id="controls" class="flex flex-wrap justify-center gap-4 mb-6">
+<body class="min-h-screen bg-gradient-to-br from-gray-900 to-indigo-900 flex flex-col items-center p-4">
+    <nav class="w-full max-w-6xl bg-white rounded-xl shadow-lg p-4 mb-6 flex justify-between items-center">
+        <div class="text-2xl font-bold text-indigo-600">Sorting Visualizer</div>
+        <ul class="flex space-x-6">
+            <li><a href="index.html" class="text-indigo-600 hover:text-indigo-800">Home</a></li>
+            <li><a href="about.html" class="text-indigo-600 hover:text-indigo-800">About</a></li>
+            <li><a href="contact.html" class="text-indigo-600 hover:text-indigo-800">Contact</a></li>
+        </ul>
+    </nav>
+    <main class="w-full max-w-6xl bg-white rounded-xl shadow-lg p-6 text-center">
+        <h1 class="text-4xl font-bold text-gray-800 mb-6">Sorting Visualizer</h1>
+        <p class="text-gray-600 mb-6">Welcome to the Sorting Visualizer, an interactive tool to explore and understand various sorting algorithms. Visualize how Bubble Sort, Selection Sort, Insertion Sort, Merge Sort, and Quick Sort work with adjustable arrays and speeds.</p>
+        <div id="controls" class="flex flex-col lg:flex-row justify-center items-center gap-4 mb-6">
+            <input 
+                type="text" 
+                id="array-input" 
+                placeholder="Enter numbers (e.g., 5, 2, 8, 1, 9)" 
+                class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full lg:w-64"
+            >
+            <button 
+                onclick="loadArray()" 
+                class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200"
+            >
+                Load Array
+            </button>
+            <button 
+                onclick="generateRandomArray()" 
+                class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
+            >
+                Random Array
+            </button>
+            <select 
+                id="algorithm" 
+                onchange="updateAlgorithm()" 
+                class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-400 w-full lg:w-40"
+            >
+                <option value="bubble">Bubble Sort</option>
+                <option value="selection">Selection Sort</option>
+                <option value="insertion">Insertion Sort</option>
+                <option value="merge">Merge Sort</option>
+                <option value="quick">Quick Sort</option>
+            </select>
+            <button 
+                onclick="startVisualization()" 
+                class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200"
+            >
+                Visualize
+            </button>
+            <div class="flex items-center gap-2">
+                <label class="text-gray-700">Speed:</label>
                 <input 
-                    type="text" 
-                    id="array-input" 
-                    placeholder="Enter numbers (e.g., 5, 2, 8, 1, 9)" 
-                    class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 w-full sm:w-64"
+                    type="range" 
+                    id="speed" 
+                    min="10" 
+                    max="1000" 
+                    value="100" 
+                    class="w-32"
                 >
-                <button 
-                    onclick="loadArray()" 
-                    class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition duration-200"
-                >
-                    Load Array
-                </button>
-                <button 
-                    onclick="generateRandomArray()" 
-                    class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition duration-200"
-                >
-                    Random Array
-                </button>
-                <select 
-                    id="algorithm" 
-                    onchange="updateAlgorithm()" 
-                    class="p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
-                >
-                    <option value="bubble">Bubble Sort</option>
-                    <option value="selection">Selection Sort</option>
-                    <option value="insertion">Insertion Sort</option>
-                    <option value="merge">Merge Sort</option>
-                    <option value="quick">Quick Sort</option>
-                </select>
-                <button 
-                    onclick="startSorting()" 
-                    class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition duration-200"
-                >
-                    Sort
-                </button>
-                <button 
-                    onclick="stopSorting()" 
-                    class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition duration-200"
-                >
-                    Stop
-                </button>
-                <div class="flex items-center gap-2">
-                    <label class="text-gray-700">Speed:</label>
-                    <input 
-                        type="range" 
-                        id="speed" 
-                        min="10" 
-                        max="1000" 
-                        value="100" 
-                        class="w-32"
-                    >
-                </div>
-                <div class="flex items-center gap-2">
-                    <label class="text-gray-700">Size:</label>
-                    <input 
-                        type="range" 
-                        id="size" 
-                        min="5" 
-                        max="50" 
-                        value="20" 
-                        onchange="generateRandomArray()" 
-                        class="w-32"
-                    >
-                </div>
-                <button 
-                    onclick="toggleSidebar()" 
-                    class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition duration-200 lg:hidden"
-                >
-                    Toggle Hints
-                </button>
             </div>
-            <div id="error" class="text-red-500 text-sm mb-4 hidden">Invalid input! Please enter numbers separated by commas (e.g., 5, 2, 8).</div>
-            <div id="array-container" class="flex justify-center items-end h-96 bg-gray-100 rounded-lg border border-gray-200 p-4">
-                <div id="bar-wrapper" class="flex items-end w-full h-full"></div>
-            </div>
-            <div id="sorted-result" class="mt-4 text-center text-green-600 font-semibold hidden">Sorted Array: <span id="sorted-array"></span></div>
-        </div>
-        <div id="sidebar" class="bg-white rounded-2xl shadow-2xl p-6 w-full lg:w-1/4 h-fit max-h-[80vh] overflow-y-auto hidden lg:block">
-            <h2 class="text-xl font-bold text-gray-800 mb-4">Algorithm Hints</h2>
-            <div class="space-y-4">
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-600">Bubble Sort</h3>
-                    <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>Compare adjacent elements.</li>
-                        <li>Swap if they are in the wrong order.</li>
-                        <li>Repeat until no swaps are needed.</li>
-                        <li>Time: O(n²), Space: O(1).</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-600">Selection Sort</h3>
-                    <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>Find the minimum element in the unsorted portion.</li>
-                        <li>Swap it with the first unsorted element.</li>
-                        <li>Move the boundary of the sorted portion.</li>
-                        <li>Time: O(n²), Space: O(1).</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-600">Insertion Sort</h3>
-                    <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>Build a sorted portion one element at a time.</li>
-                        <li>Take the next element and insert it into the sorted portion.</li>
-                        <li>Shift larger elements to make space.</li>
-                        <li>Time: O(n²), Space: O(1).</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-600">Merge Sort</h3>
-                    <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>Divide the array into two halves.</li>
-                        <li>Recursively sort each half.</li>
-                        <li>Merge the sorted halves, comparing elements.</li>
-                        <li>Time: O(n log n), Space: O(n).</li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-lg font-semibold text-blue-600">Quick Sort</h3>
-                    <ul class="list-disc list-inside text-gray-600 text-sm">
-                        <li>Choose a pivot (here, last element).</li>
-                        <li>Partition array so elements < pivot are on the left, > pivot on the right.</li>
-                        <li>Recursively sort the subarrays.</li>
-                        <li>Time: O(n log n) average, O(n²) worst, Space: O(log n).</li>
-                    </ul>
-                </div>
+            <div class="flex items-center gap-2">
+                <label class="text-gray-700">Size:</label>
+                <input 
+                    type="range" 
+                    id="size" 
+                    min="5" 
+                    max="50" 
+                    value="20" 
+                    onchange="generateRandomArray()" 
+                    class="w-32"
+                >
             </div>
         </div>
-    </div>
+        <div id="error" class="text-red-500 text-sm mb-4 hidden">Invalid input! Please enter numbers separated by commas (e.g., 5, 2, 8).</div>
+    </main>
     <footer class="mt-4 text-white text-sm">
         Developed by Lokesh Kumar
     </footer>
